@@ -1,31 +1,32 @@
 package ru.catn;
 
 import java.util.Collections;
+import java.util.List;
 
 public class TestDIYArrayListInteger {
 
     private static final int DEFAULT_CAPACITY = 40;
 
-    DIYArrayList<Integer> arrayList = new DIYArrayList<>();
+    List<Integer> arrayList = new DIYArrayList<>();
 
     public void run() {
         fillList();
         System.out.println("DIYArrayList:");
-        arrayList.print();
+        System.out.println(arrayList);
 
         Integer[] integerArray = {1, 2, 3};
         Collections.addAll(arrayList, integerArray);
         System.out.println("DIYArrayList after Collections.addAll [1,2,3]");
-        arrayList.print();
+        System.out.println(arrayList);
 
-        DIYArrayList<Integer> copyOfArrayList = new DIYArrayList<>(arrayList.size());
+        List<Integer> copyOfArrayList = new DIYArrayList<>(arrayList.size());
         Collections.copy(copyOfArrayList, arrayList);
         System.out.println("Copy of DIYArrayList after copying:");
-        copyOfArrayList.print();
+        System.out.println(copyOfArrayList);
 
         Collections.sort(arrayList);
         System.out.println("DIYArrayList after sorting:");
-        arrayList.print();
+        System.out.println(arrayList);
     }
 
     private void fillList() {

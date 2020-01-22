@@ -6,14 +6,21 @@ import java.util.*;
 
 public class DIYArrayList<T> implements List<T> {
 
+    private static final int ADDITIONAL_CAPACITY = 10;
+
     private Object[] elementData;
     private int size;
 
-    DIYArrayList() {}
+    public DIYArrayList() {
+    }
 
-    DIYArrayList(int initialCapacity) {
-        this.elementData = new Object[initialCapacity];
-        this.size = initialCapacity;
+    public DIYArrayList(int initialCapacity) {
+        if (initialCapacity > 0) {
+            this.elementData = new Object[initialCapacity];
+            this.size = initialCapacity;
+        } else if (initialCapacity < 0) {
+            throw new IllegalArgumentException("initialCapacity = " + initialCapacity);
+        }
     }
 
     @Override
@@ -23,7 +30,7 @@ public class DIYArrayList<T> implements List<T> {
 
     @Override
     public boolean isEmpty() {
-        return size() == 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -71,25 +78,28 @@ public class DIYArrayList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
-        add(size(), t);
+        add(size, t);
         return true;
     }
 
     @Override
     public void add(int index, T element) {
-        Object[] arrayListNew = new Object[this.size() + 1];
-        if (index > 0) {
-            System.arraycopy(this.elementData, 0,
-                            arrayListNew, 0,
-                            index);
+        if (index > size || index < 0)
+            throw new IndexOutOfBoundsException("Incorrect index = " + index);
+
+        if (size == 0) {
+            elementData = new Object[ADDITIONAL_CAPACITY];
+        } else if (this.size + 1 > elementData.length) {
+            int newLength = this.size + ADDITIONAL_CAPACITY;
+            this.elementData = Arrays.copyOf(this.elementData, newLength);
         }
-        arrayListNew[index] = element;
-        if (index + 1 <= this.size()) {
+
+        if (index < size) {
             System.arraycopy(this.elementData, index,
-                            arrayListNew, index + 1,
-                            this.size() - index);
+                    this.elementData, index + 1,
+                    this.size - index);
         }
-        this.elementData = arrayListNew;
+        elementData[index] = element;
         size++;
     }
 
@@ -131,7 +141,6 @@ public class DIYArrayList<T> implements List<T> {
     @Override
     public boolean equals(Object obj) {
         throw new UnsupportedOperationException();
-        //return super.equals(obj);
     }
 
     @Override
@@ -142,12 +151,14 @@ public class DIYArrayList<T> implements List<T> {
     @SuppressWarnings("unchecked")
     @Override
     public T get(int index) {
+        checkIndex(index);
         return (T) this.elementData[index];
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public T set(int index, T element) {
+        checkIndex(index);
         T oldValue = (T) elementData[index];
         elementData[index] = element;
         return oldValue;
@@ -181,24 +192,35 @@ public class DIYArrayList<T> implements List<T> {
 
     private class ListItr extends Itr implements ListIterator<T> {
         ListItr(int index) {
+            checkIndex(index);
             cursor = index;
         }
 
         @Override
-        public boolean hasPrevious() { return cursor != 0; }
+        public boolean hasPrevious() {
+            return cursor != 0;
+        }
 
         @Override
         public T previous() {
+            if (cursor == 0)
+                throw new NoSuchElementException("No previous element");
             cursor--;
             lastRet = cursor;
             return get(cursor);
         }
 
         @Override
-        public int nextIndex() { return cursor; }
+        public int nextIndex() {
+            return cursor;
+        }
 
         @Override
-        public int previousIndex() { return cursor - 1; }
+        public int previousIndex() {
+            if (cursor == 0)
+                throw new NoSuchElementException("No previous index");
+            return cursor - 1;
+        }
 
         @Override
         public void remove() {
@@ -207,6 +229,8 @@ public class DIYArrayList<T> implements List<T> {
 
         @Override
         public void set(T t) {
+            if (lastRet < 0)
+                throw new NoSuchElementException();
             DIYArrayList.this.set(lastRet, t);
         }
 
@@ -222,16 +246,24 @@ public class DIYArrayList<T> implements List<T> {
         throw new UnsupportedOperationException();
     }
 
-    public void print() {
-        Iterator<T> iterator = this.iterator();
+    @Override
+    public String toString() {
+        if (this.size == 0)
+            return "[]";
 
-        System.out.print("[");
-        while (iterator.hasNext()) {
-            System.out.print(iterator.next());
-            if (iterator.hasNext()){
-                System.out.print(", ");
-            }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append('[');
+        for (int i = 0; i < this.size; i++) {
+            stringBuilder.append(elementData[i]);
+            if (i + 1 < this.size)
+                stringBuilder.append(", ");
         }
-        System.out.println("]");
+        stringBuilder.append(']');
+        return stringBuilder.toString();
+    }
+
+    private void checkIndex(int index) {
+        if (index >= size || index < 0)
+            throw new IndexOutOfBoundsException("Incorrect index = " + index);
     }
 }

@@ -6,7 +6,7 @@ public class Customer implements Comparable<Customer>{
     private Integer id;
     private String name;
 
-    Customer(Integer id, String name) {
+    public Customer(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -18,9 +18,9 @@ public class Customer implements Comparable<Customer>{
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name=" + name +
                 '}';
     }
 
