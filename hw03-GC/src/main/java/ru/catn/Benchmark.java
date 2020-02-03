@@ -32,10 +32,10 @@ public class Benchmark implements BenchmarkMBean {
                     }
                 }
             }
-//            if ( i > 0 && ( (i + 1) % (100 * 100) == 0 ) ) {
-//                System.out.println("processing time of " + 100 * 100 + " iterations: " + (System.currentTimeMillis() - beginTime) + "ms");
-//                beginTime = System.currentTimeMillis();
-//            }
+            if ( i > 0 && ( (i + 1) % (100 * 100) == 0 ) ) {
+                System.out.println("processing time of " + 100 * 100 + " iterations: " + (System.currentTimeMillis() - beginTime) + "ms");
+                beginTime = System.currentTimeMillis();
+            }
         }
     }
 }
