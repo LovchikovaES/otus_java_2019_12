@@ -1,6 +1,13 @@
-Сравнительная таблица — GC_compare.pdf
+Сравнительная таблица (с графиками) — GC_compare.pdf
 
-блок Thread.sleep(n) – использовала для построения графиков в jconsole и для OutOfMemory
+Общее время выполнения (c) (на 256MB): 8 (G1); 14 (SerialGC); 17 (ParallelGC)<br>
+Средняя пауза GC (мс): 21 (G1); 75 (SerialGC); 154 (ParallelGC)<br>
+Кол-во сборок GC: 84 (G1); 86 (SerialGC); 86 (ParallelGC)<br>
+Среднее время выполнения 10 000 итераций (мс): 7 (G1); 31 (SerialGC); 17 (ParallelGC)<br>
+OutOfMemory при 256MB наступает после (кол-во итераций): 1 302 * 10 000 (G1); 1 264 * 10 000 (SerialGC); 1 254 * 10 000 (ParallelGC)<br>
+Общее время (c) (на 512MB): 8 (G1); 6 (SerialGC); 7 (ParallelGC)<br>
+Кол-во сборок GC: 28 (G1); 40 (SerialGC); 44 (ParallelGC)<br>
+Среднее время выполнения 10 000 итераций (мс): 8,7 (G1); 6,6 (SerialGC); 7,2 (ParallelGC)<br>
 
 для кейса OutOfMemory меняла начальный размер ArrayList = 10 и конечный размер = 100_000_000 и использовала Thread.sleep(0, 1) на каждом индексе кратном 100
 

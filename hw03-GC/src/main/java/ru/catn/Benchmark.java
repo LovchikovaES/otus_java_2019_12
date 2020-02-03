@@ -20,12 +20,6 @@ public class Benchmark implements BenchmarkMBean {
 
         List<Integer> list = new ArrayList<>(INITIAL_CAPACITY);
 
-//        try {
-//            Thread.sleep(15000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
         long beginTime = System.currentTimeMillis();
         for (int i = 0; i < this.size; i++) {
             list.add(i, i);
@@ -38,19 +32,10 @@ public class Benchmark implements BenchmarkMBean {
                     }
                 }
             }
-            if ( i > 0 && ( (i + 1) % (100 * 100) == 0 ) ) {
-                System.out.println("processing time of " + 100 * 100 + " iterations: " + (System.currentTimeMillis() - beginTime) + "ms");
-                beginTime = System.currentTimeMillis();
-            }
-
-//            if (i % 100 == 0) {
-//                try {
-//                    Thread.sleep(0, 1);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+//            if ( i > 0 && ( (i + 1) % (100 * 100) == 0 ) ) {
+//                System.out.println("processing time of " + 100 * 100 + " iterations: " + (System.currentTimeMillis() - beginTime) + "ms");
+//                beginTime = System.currentTimeMillis();
 //            }
-
         }
     }
 }
