@@ -15,6 +15,7 @@ public class CalculatorTest {
     @Before
     public void beforeSecond() {
         System.out.println("beforeSecond() has called.");
+        //throw new RuntimeException("Exception in beforeSecond().");
     }
 
     @Before
