@@ -1,6 +1,5 @@
 package ru.catn;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -37,7 +36,7 @@ public class TestFramework {
         }
     }
 
-    private void executeMethods() throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    private void executeMethods() throws IllegalAccessException, InvocationTargetException, InstantiationException {
         int successfulCounter = 0;
 
         Constructor<?>[] constructors = this.testClass.getConstructors();
@@ -46,33 +45,54 @@ public class TestFramework {
         for (var testMethod : testMethods) {
             Object testInstance = constructors[0].newInstance();
 
-            Collections.shuffle(beforeMethods);
-            try {
-                for (var beforeMethod : beforeMethods) {
-                    beforeMethod.invoke(testInstance);
-                }
-                try {
-                    testMethod.invoke(testInstance);
-                    System.out.println("Test of " + testMethod.getName() + "() successful done!");
+            if (executeBeforeMethods(testInstance)) {
+                if (executeTestMethod(testMethod, testInstance))
                     successfulCounter++;
-                } catch (Exception exception) {
-                    System.out.println("Test of " + testMethod.getName() + "() failed! "
-                            + "Cause: " + exception.getCause());
-                }
-            } catch (Exception exception) {
-                System.out.println("Exception: " + exception.getCause());
-            } finally {
-                Collections.shuffle(afterMethods);
-                for (var afterMethod : afterMethods) {
-                    afterMethod.invoke(testInstance);
-                }
             }
+            executeAfterMethods(testInstance);
             System.out.println();
         }
-
         System.out.println("Results: "
                 + successfulCounter + "(successful), "
                 + (testMethods.size() - successfulCounter) + "(failed), "
                 + testMethods.size() + "(all).");
+    }
+
+    private boolean executeBeforeMethods(Object testInstance) {
+        Collections.shuffle(beforeMethods);
+        for (var beforeMethod : beforeMethods) {
+            try {
+                beforeMethod.invoke(testInstance);
+            } catch (Exception exception) {
+                System.out.println(beforeMethod.getName() + "() failed! "
+                        + "Cause: " + exception.getCause());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean executeTestMethod(Method testMethod, Object testInstance) {
+        try {
+            testMethod.invoke(testInstance);
+            System.out.println("Test of " + testMethod.getName() + "() successful done!");
+        } catch (Exception exception) {
+            System.out.println("Test of " + testMethod.getName() + "() failed! "
+                    + "Cause: " + exception.getCause());
+            return false;
+        }
+        return true;
+    }
+
+    private void executeAfterMethods(Object testInstance) {
+        Collections.shuffle(afterMethods);
+        for (var afterMethod : afterMethods) {
+            try {
+                afterMethod.invoke(testInstance);
+            } catch (Exception exception) {
+                System.out.println(afterMethod.getName() + "() failed! "
+                        + "Cause: " + exception.getCause());
+            }
+        }
     }
 }
