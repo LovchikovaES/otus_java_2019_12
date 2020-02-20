@@ -141,4 +141,27 @@ class ATMTest {
         Assertions.assertEquals(notesToGive, atm.giveMoney(6600));
     }
 
+    @Test
+    void checkPutNegativeQuantitiesOfNotes() {
+        Map<Note, Integer> notesToPut = new HashMap<>();
+        notesToPut.put(noteOf500, -3);
+        notesToPut.put(noteOf100, 4);
+        notesToPut.put(noteOf50, 2);
+        notesToPut.put(noteOf1000, 1);
+
+        Assertions.assertThrows(RuntimeException.class,
+                () -> atm.putMoney(notesToPut),"Quantity of notes must be positive");
+    }
+
+    @Test
+    void checkPutZeroQuantitiesOfNotes() {
+        Map<Note, Integer> notesToPut = new HashMap<>();
+        notesToPut.put(noteOf500, 0);
+        notesToPut.put(noteOf100, 4);
+        notesToPut.put(noteOf50, 0);
+        notesToPut.put(noteOf1000, 1);
+
+        atm.putMoney(notesToPut); //1400
+        Assertions.assertEquals(1400, atm.getBalance());
+    }
 }

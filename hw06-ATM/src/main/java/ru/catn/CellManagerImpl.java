@@ -19,20 +19,26 @@ public class CellManagerImpl implements CellManager{
     }
 
     @Override
-    public Map<Note, Integer> putMoney(Map<Note, Integer> notes) {
+    public Map<Note, Integer> putMoney(Map<Note, Integer> notes) throws RuntimeException {
         Map<Note, Integer> incorrectNotes = new HashMap<>();
 
-        for (Map.Entry<Note, Integer> entry: notes.entrySet()) {
+        for (Map.Entry<Note, Integer> note: notes.entrySet()) {
+            if (note.getValue() < 0) {
+                throw new RuntimeException("Quantity of notes must be positive");
+            }
+            if (note.getValue() == 0) {
+                continue;
+            }
             boolean correctNote = false;
             for (var cell : cells) {
-                if (cell.getNote().equals(entry.getKey())) {
-                    cell.putNotes(entry.getValue());
+                if (cell.getNote().equals(note.getKey())) {
+                    cell.putNotes(note.getValue());
                     correctNote = true;
                     break;
                 }
             }
             if (!correctNote) {
-                incorrectNotes.put(entry.getKey(),entry.getValue());
+                incorrectNotes.put(note.getKey(),note.getValue());
             }
         }
         return incorrectNotes;
