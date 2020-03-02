@@ -14,7 +14,7 @@ public class Demo {
         Note noteOf1000 = new Note(1000);
 
         List<Note> availableNotes = Arrays.asList(noteOf50, noteOf100, noteOf500, noteOf1000);
-        ATM atm = new ATM(availableNotes);
+        CellManager atm = new CellManagerImpl(availableNotes);
 
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 13);

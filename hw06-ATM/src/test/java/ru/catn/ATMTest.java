@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 class ATMTest {
-    ATM atm;
+    CellManager atm;
     Note noteOf50 = new Note(50);
     Note noteOf100 = new Note(100);
     Note noteOf500 = new Note(500);
@@ -17,7 +17,7 @@ class ATMTest {
     @BeforeEach
     void setUp() {
         List<Note> availableNotes = Arrays.asList(noteOf50, noteOf100, noteOf500, noteOf1000);
-        atm = new ATM(availableNotes);
+        atm = new CellManagerImpl(availableNotes);
     }
 
     @Test

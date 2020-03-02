@@ -2,20 +2,14 @@ package ru.catn;
 
 import java.util.*;
 
-public class CellManagerImpl implements CellManager{
+public class CellManagerImpl implements CellManager {
+
     private final List<Note> availableNotes;
     private List<CellImpl> cells = new ArrayList<>();
 
     public CellManagerImpl(List<Note> availableNotes) {
         this.availableNotes = availableNotes;
         createCells();
-    }
-
-    private void createCells() {
-        for (var availableNote : availableNotes ) {
-            cells.add(new CellImpl(availableNote));
-        }
-        Collections.sort(cells);
     }
 
     @Override
@@ -86,5 +80,12 @@ public class CellManagerImpl implements CellManager{
         }
 
         return notesToGive;
+    }
+
+    private void createCells() {
+        for (var availableNote : availableNotes ) {
+            cells.add(new CellImpl(availableNote));
+        }
+        Collections.sort(cells);
     }
 }
