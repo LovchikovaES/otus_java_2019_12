@@ -10,7 +10,7 @@ public class RestoreATMProducer {
         listeners.add(listener);
     }
 
-    void event() {
+    void processEvent() {
         listeners.forEach(listener -> listener.onRestoreATM());
     }
 }

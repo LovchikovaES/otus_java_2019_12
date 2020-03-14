@@ -1,6 +1,6 @@
 package ru.catn.cell;
 
-public class CellState {
+public class CellState implements Cloneable {
     private final int quantity;
 
     public CellState(int quantity) {
@@ -9,5 +9,10 @@ public class CellState {
 
     public int getQuantity() {
         return this.quantity;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

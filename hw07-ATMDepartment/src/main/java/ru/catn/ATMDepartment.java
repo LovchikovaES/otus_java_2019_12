@@ -27,7 +27,7 @@ public class ATMDepartment {
     }
 
     public void restoreATMs() {
-        restoreATMProducer.event();
+        restoreATMProducer.processEvent();
     }
 
     @Override

@@ -19,12 +19,12 @@ class ATMDepartmentTest {
     List<Note> availableNotes = Arrays.asList(noteOf50, noteOf100, noteOf500, noteOf1000);
 
     @Test
-    void checkBalance() {
+    void checkBalance() throws Exception {
         List<ATM> atms = Arrays.asList(new ATMImpl(availableNotes), new ATMImpl(availableNotes), new ATMImpl(availableNotes));
         atmDepartment.addATMs(atms);
 
         int i = 0;
-        for(var atm : atms) {
+        for (var atm : atms) {
             Map<Note, Integer> notesToPut = new HashMap<>();
             switch (i) {
                 case 0:
@@ -45,12 +45,12 @@ class ATMDepartmentTest {
     }
 
     @Test
-    void checkRestoreToFirstState() {
+    void checkRestoreToFirstState() throws Exception {
         List<ATM> atms = Arrays.asList(new ATMImpl(availableNotes), new ATMImpl(availableNotes), new ATMImpl(availableNotes));
         atmDepartment.addATMs(atms);
 
         int i = 0;
-        for(var atm : atms) {
+        for (var atm : atms) {
             Map<Note, Integer> notesToPut = new HashMap<>();
             switch (i) {
                 case 0:

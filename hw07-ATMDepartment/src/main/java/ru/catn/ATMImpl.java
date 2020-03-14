@@ -22,7 +22,7 @@ public class ATMImpl implements ATM, RestoreATMListener {
     }
 
     @Override
-    public Map<Note, Integer> putMoney(Map<Note, Integer> notes) throws RuntimeException {
+    public Map<Note, Integer> putMoney(Map<Note, Integer> notes) throws Exception {
         Map<Note, Integer> incorrectNotes = new HashMap<>();
 
         for (Map.Entry<Note, Integer> note : notes.entrySet()) {
@@ -100,7 +100,7 @@ public class ATMImpl implements ATM, RestoreATMListener {
         }
     }
 
-    private void saveState() {
+    private void saveState() throws CloneNotSupportedException {
         for (var cell : cells) {
             CellHistory cellHistory = cellsHistory.get(cell);
             cellHistory.addState(cell.getState());

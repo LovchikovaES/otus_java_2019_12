@@ -24,7 +24,7 @@ class ATMTest {
     }
 
     @Test
-    void checkBalance() {
+    void checkBalance() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 2);
         notesToPut.put(noteOf100, 4);
@@ -41,7 +41,7 @@ class ATMTest {
     }
 
     @Test
-    void returnIncorrectNotes() {
+    void returnIncorrectNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 2);
         notesToPut.put(noteOf100, 4);
@@ -56,7 +56,7 @@ class ATMTest {
     }
 
     @Test
-    void checkBalanceWithIncorrectNotes() {
+    void checkBalanceWithIncorrectNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 2);
         notesToPut.put(noteOf100, 4);
@@ -67,7 +67,7 @@ class ATMTest {
     }
 
     @Test
-    void returnNotEnoughMoney() {
+    void returnNotEnoughMoney() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 1);
         notesToPut.put(noteOf100, 2);
@@ -80,7 +80,7 @@ class ATMTest {
     }
 
     @Test
-    void returnNotEnoughNotes() {
+    void returnNotEnoughNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 2);
         notesToPut.put(noteOf100, 2);
@@ -93,7 +93,7 @@ class ATMTest {
     }
 
     @Test
-    void checkTwoReturnNotesForGive() {
+    void checkTwoReturnNotesForGive() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf1000, 4);
         notesToPut.put(noteOf500, 4);
@@ -102,7 +102,7 @@ class ATMTest {
         notesToPut.put(noteOf1000, 4);
         atm.putMoney(notesToPut); // 6600
 
-        Map<Note,Integer> notesToGive = new HashMap<>();
+        Map<Note, Integer> notesToGive = new HashMap<>();
         notesToGive.put(noteOf50, 1);
         notesToGive.put(noteOf1000, 2);
 
@@ -110,7 +110,7 @@ class ATMTest {
     }
 
     @Test
-    void checkFourReturnNotesForGive() {
+    void checkFourReturnNotesForGive() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 4);
         notesToPut.put(noteOf100, 4);
@@ -118,7 +118,7 @@ class ATMTest {
         notesToPut.put(noteOf1000, 4);
         atm.putMoney(notesToPut); // 6600
 
-        Map<Note,Integer> notesToGive = new HashMap<>();
+        Map<Note, Integer> notesToGive = new HashMap<>();
         notesToGive.put(noteOf50, 1);
         notesToGive.put(noteOf1000, 4);
         notesToGive.put(noteOf500, 3);
@@ -128,7 +128,7 @@ class ATMTest {
     }
 
     @Test
-    void checkGiveAllMoney() {
+    void checkGiveAllMoney() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 4);
         notesToPut.put(noteOf100, 4);
@@ -136,7 +136,7 @@ class ATMTest {
         notesToPut.put(noteOf1000, 4);
         atm.putMoney(notesToPut); // 6600
 
-        Map<Note,Integer> notesToGive = new HashMap<>();
+        Map<Note, Integer> notesToGive = new HashMap<>();
         notesToGive.put(noteOf1000, 4);
         notesToGive.put(noteOf500, 4);
         notesToGive.put(noteOf100, 4);
@@ -158,7 +158,7 @@ class ATMTest {
     }
 
     @Test
-    void checkPutZeroQuantitiesOfNotes() {
+    void checkPutZeroQuantitiesOfNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 0);
         notesToPut.put(noteOf100, 4);
@@ -170,7 +170,7 @@ class ATMTest {
     }
 
     @Test
-    void checkBalanceForTwoTimesToPut() {
+    void checkBalanceForTwoTimesToPut() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 2);
         notesToPut.put(noteOf100, 3);
@@ -191,7 +191,7 @@ class ATMTest {
     }
 
     @Test
-    void checkRestoreATMtoInitialStateForAllNotes() {
+    void checkRestoreATMtoInitialStateForAllNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 2);
         notesToPut.put(noteOf100, 3);
@@ -218,7 +218,7 @@ class ATMTest {
     }
 
     @Test
-    void checkRestoreATMtoInitialState() {
+    void checkRestoreATMtoInitialState() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
         notesToPut.put(noteOf500, 2);
         notesToPut.put(noteOf1000, 5);
