@@ -3,38 +3,39 @@ package ru.catn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.catn.cell.Note;
+import ru.catn.atm.ATMImpl;
+import ru.catn.note.Note;
+import ru.catn.note.NoteFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 class ATMTest {
     ATMImpl atm;
-    Note noteOf50 = new Note(50);
-    Note noteOf100 = new Note(100);
-    Note noteOf500 = new Note(500);
-    Note noteOf1000 = new Note(1000);
+    NoteFactory noteFactory = new NoteFactory(Arrays.asList(
+            new Note(50),
+            new Note(100),
+            new Note(500),
+            new Note(1000)));
 
     @BeforeEach
     void setUp() {
-        List<Note> availableNotes = Arrays.asList(noteOf50, noteOf100, noteOf500, noteOf1000);
-        atm = new ATMImpl(availableNotes);
+        atm = new ATMImpl(noteFactory);
     }
 
     @Test
     void checkBalance() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 2);
-        notesToPut.put(noteOf100, 4);
-        notesToPut.put(noteOf50, 4);
-        notesToPut.put(noteOf1000, 3);
+        notesToPut.put(noteFactory.getNote(500), 2);
+        notesToPut.put(noteFactory.getNote(100), 4);
+        notesToPut.put(noteFactory.getNote(50), 4);
+        notesToPut.put(noteFactory.getNote(1000), 3);
         atm.putMoney(notesToPut); // 4600
         atm.giveMoney(2750);
         notesToPut.clear();
-        notesToPut.put(noteOf100, 2);
-        notesToPut.put(noteOf50, 3);
+        notesToPut.put(noteFactory.getNote(100), 2);
+        notesToPut.put(noteFactory.getNote(50), 3);
         atm.putMoney(notesToPut); // 350
         atm.giveMoney(850);
         Assertions.assertEquals(1350, atm.getBalance());
@@ -43,8 +44,8 @@ class ATMTest {
     @Test
     void returnIncorrectNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 2);
-        notesToPut.put(noteOf100, 4);
+        notesToPut.put(noteFactory.getNote(500), 2);
+        notesToPut.put(noteFactory.getNote(100), 4);
         notesToPut.put(new Note(30), 4);
         notesToPut.put(new Note(20), 3);
 
@@ -58,8 +59,8 @@ class ATMTest {
     @Test
     void checkBalanceWithIncorrectNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 2);
-        notesToPut.put(noteOf100, 4);
+        notesToPut.put(noteFactory.getNote(500), 2);
+        notesToPut.put(noteFactory.getNote(100), 4);
         notesToPut.put(new Note(30), 4);
         notesToPut.put(new Note(20), 3);
         atm.putMoney(notesToPut);
@@ -69,10 +70,10 @@ class ATMTest {
     @Test
     void returnNotEnoughMoney() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 1);
-        notesToPut.put(noteOf100, 2);
-        notesToPut.put(noteOf50, 3);
-        notesToPut.put(noteOf1000, 1);
+        notesToPut.put(noteFactory.getNote(500), 1);
+        notesToPut.put(noteFactory.getNote(100), 2);
+        notesToPut.put(noteFactory.getNote(50), 3);
+        notesToPut.put(noteFactory.getNote(1000), 1);
         atm.putMoney(notesToPut); // 1850
         Assertions.assertThrows(RuntimeException.class,
                 () -> atm.giveMoney(1855),
@@ -82,10 +83,10 @@ class ATMTest {
     @Test
     void returnNotEnoughNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 2);
-        notesToPut.put(noteOf100, 2);
-        notesToPut.put(noteOf50, 3);
-        notesToPut.put(noteOf1000, 1);
+        notesToPut.put(noteFactory.getNote(500), 2);
+        notesToPut.put(noteFactory.getNote(100), 2);
+        notesToPut.put(noteFactory.getNote(50), 3);
+        notesToPut.put(noteFactory.getNote(1000), 1);
         atm.putMoney(notesToPut); // 2250
         Assertions.assertThrows(RuntimeException.class,
                 () -> atm.giveMoney(950),
@@ -95,16 +96,16 @@ class ATMTest {
     @Test
     void checkTwoReturnNotesForGive() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf1000, 4);
-        notesToPut.put(noteOf500, 4);
-        notesToPut.put(noteOf100, 4);
-        notesToPut.put(noteOf50, 4);
-        notesToPut.put(noteOf1000, 4);
+        notesToPut.put(noteFactory.getNote(1000), 4);
+        notesToPut.put(noteFactory.getNote(500), 4);
+        notesToPut.put(noteFactory.getNote(100), 4);
+        notesToPut.put(noteFactory.getNote(50), 4);
+        notesToPut.put(noteFactory.getNote(1000), 4);
         atm.putMoney(notesToPut); // 6600
 
         Map<Note, Integer> notesToGive = new HashMap<>();
-        notesToGive.put(noteOf50, 1);
-        notesToGive.put(noteOf1000, 2);
+        notesToGive.put(noteFactory.getNote(50), 1);
+        notesToGive.put(noteFactory.getNote(1000), 2);
 
         Assertions.assertEquals(notesToGive, atm.giveMoney(2050));
     }
@@ -112,17 +113,17 @@ class ATMTest {
     @Test
     void checkFourReturnNotesForGive() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 4);
-        notesToPut.put(noteOf100, 4);
-        notesToPut.put(noteOf50, 4);
-        notesToPut.put(noteOf1000, 4);
+        notesToPut.put(noteFactory.getNote(500), 4);
+        notesToPut.put(noteFactory.getNote(100), 4);
+        notesToPut.put(noteFactory.getNote(50), 4);
+        notesToPut.put(noteFactory.getNote(1000), 4);
         atm.putMoney(notesToPut); // 6600
 
         Map<Note, Integer> notesToGive = new HashMap<>();
-        notesToGive.put(noteOf50, 1);
-        notesToGive.put(noteOf1000, 4);
-        notesToGive.put(noteOf500, 3);
-        notesToGive.put(noteOf100, 2);
+        notesToGive.put(noteFactory.getNote(50), 1);
+        notesToGive.put(noteFactory.getNote(1000), 4);
+        notesToGive.put(noteFactory.getNote(500), 3);
+        notesToGive.put(noteFactory.getNote(100), 2);
 
         Assertions.assertEquals(notesToGive, atm.giveMoney(5750));
     }
@@ -130,17 +131,17 @@ class ATMTest {
     @Test
     void checkGiveAllMoney() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 4);
-        notesToPut.put(noteOf100, 4);
-        notesToPut.put(noteOf50, 4);
-        notesToPut.put(noteOf1000, 4);
+        notesToPut.put(noteFactory.getNote(500), 4);
+        notesToPut.put(noteFactory.getNote(100), 4);
+        notesToPut.put(noteFactory.getNote(50), 4);
+        notesToPut.put(noteFactory.getNote(1000), 4);
         atm.putMoney(notesToPut); // 6600
 
         Map<Note, Integer> notesToGive = new HashMap<>();
-        notesToGive.put(noteOf1000, 4);
-        notesToGive.put(noteOf500, 4);
-        notesToGive.put(noteOf100, 4);
-        notesToGive.put(noteOf50, 4);
+        notesToGive.put(noteFactory.getNote(1000), 4);
+        notesToGive.put(noteFactory.getNote(500), 4);
+        notesToGive.put(noteFactory.getNote(100), 4);
+        notesToGive.put(noteFactory.getNote(50), 4);
 
         Assertions.assertEquals(notesToGive, atm.giveMoney(6600));
     }
@@ -148,22 +149,22 @@ class ATMTest {
     @Test
     void checkPutNegativeQuantitiesOfNotes() {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, -3);
-        notesToPut.put(noteOf100, 4);
-        notesToPut.put(noteOf50, 2);
-        notesToPut.put(noteOf1000, 1);
+        notesToPut.put(noteFactory.getNote(500), -3);
+        notesToPut.put(noteFactory.getNote(100), 4);
+        notesToPut.put(noteFactory.getNote(50), 2);
+        notesToPut.put(noteFactory.getNote(1000), 1);
 
         Assertions.assertThrows(RuntimeException.class,
-                () -> atm.putMoney(notesToPut),"Quantity of notes must be positive");
+                () -> atm.putMoney(notesToPut), "Quantity of notes must be positive");
     }
 
     @Test
     void checkPutZeroQuantitiesOfNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 0);
-        notesToPut.put(noteOf100, 4);
-        notesToPut.put(noteOf50, 0);
-        notesToPut.put(noteOf1000, 1);
+        notesToPut.put(noteFactory.getNote(500), 0);
+        notesToPut.put(noteFactory.getNote(100), 4);
+        notesToPut.put(noteFactory.getNote(50), 0);
+        notesToPut.put(noteFactory.getNote(1000), 1);
 
         atm.putMoney(notesToPut); //1400
         Assertions.assertEquals(1400, atm.getBalance());
@@ -172,18 +173,18 @@ class ATMTest {
     @Test
     void checkBalanceForTwoTimesToPut() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 2);
-        notesToPut.put(noteOf100, 3);
-        notesToPut.put(noteOf50, 4);
-        notesToPut.put(noteOf1000, 5);
+        notesToPut.put(noteFactory.getNote(500), 2);
+        notesToPut.put(noteFactory.getNote(100), 3);
+        notesToPut.put(noteFactory.getNote(50), 4);
+        notesToPut.put(noteFactory.getNote(1000), 5);
 
         atm.putMoney(notesToPut); // 6500
 
         notesToPut.clear();
-        notesToPut.put(noteOf500, 1);
-        notesToPut.put(noteOf100, 1);
-        notesToPut.put(noteOf50, 1);
-        notesToPut.put(noteOf1000, 1);
+        notesToPut.put(noteFactory.getNote(500), 1);
+        notesToPut.put(noteFactory.getNote(100), 1);
+        notesToPut.put(noteFactory.getNote(50), 1);
+        notesToPut.put(noteFactory.getNote(1000), 1);
 
         atm.putMoney(notesToPut); // 1650
 
@@ -193,40 +194,41 @@ class ATMTest {
     @Test
     void checkRestoreATMtoInitialStateForAllNotes() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 2);
-        notesToPut.put(noteOf100, 3);
-        notesToPut.put(noteOf50, 4);
-        notesToPut.put(noteOf1000, 5);
+        notesToPut.put(noteFactory.getNote(500), 2);
+        notesToPut.put(noteFactory.getNote(100), 3);
+        notesToPut.put(noteFactory.getNote(50), 4);
+        notesToPut.put(noteFactory.getNote(1000), 5);
 
         atm.putMoney(notesToPut); // 6500
 
         notesToPut.clear();
-        notesToPut.put(noteOf500, 1);
-        notesToPut.put(noteOf100, 1);
-        notesToPut.put(noteOf50, 1);
-        notesToPut.put(noteOf1000, 1);
+        notesToPut.put(noteFactory.getNote(500), 1);
+        notesToPut.put(noteFactory.getNote(100), 1);
+        notesToPut.put(noteFactory.getNote(50), 1);
+        notesToPut.put(noteFactory.getNote(1000), 1);
 
         atm.putMoney(notesToPut); // 1650
 
         atm.onRestoreATM();
         Assertions.assertEquals(6500, atm.getBalance());
     }
+
     @Test
     void checkRestoreATMtoInitialStateWithNoInitialState() {
         Assertions.assertThrows(RuntimeException.class,
-                () -> atm.onRestoreATM(),"No first state");
+                () -> atm.onRestoreATM(), "No first state");
     }
 
     @Test
     void checkRestoreATMtoInitialState() throws Exception {
         Map<Note, Integer> notesToPut = new HashMap<>();
-        notesToPut.put(noteOf500, 2);
-        notesToPut.put(noteOf1000, 5);
+        notesToPut.put(noteFactory.getNote(500), 2);
+        notesToPut.put(noteFactory.getNote(1000), 5);
         atm.putMoney(notesToPut); // 6000
 
         notesToPut.clear();
-        notesToPut.put(noteOf100, 1);
-        notesToPut.put(noteOf50, 1);
+        notesToPut.put(noteFactory.getNote(100), 1);
+        notesToPut.put(noteFactory.getNote(50), 1);
 
         atm.putMoney(notesToPut); // 150
 

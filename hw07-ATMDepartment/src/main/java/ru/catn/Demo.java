@@ -1,6 +1,10 @@
 package ru.catn;
 
-import ru.catn.cell.Note;
+import ru.catn.atm.ATM;
+import ru.catn.atm.ATMDepartment;
+import ru.catn.atm.ATMImpl;
+import ru.catn.note.Note;
+import ru.catn.note.NoteFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,17 +12,17 @@ import java.util.List;
 import java.util.Map;
 
 public class Demo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ATMDepartment atmDepartment = new ATMDepartment();
-        Note noteOf50 = new Note(50);
-        Note noteOf100 = new Note(100);
-        Note noteOf500 = new Note(500);
-        Note noteOf1000 = new Note(1000);
-        List<Note> availableNotes = Arrays.asList(noteOf50, noteOf100, noteOf500, noteOf1000);
+        NoteFactory noteFactory = new NoteFactory(Arrays.asList(
+                new Note(50),
+                new Note(100),
+                new Note(500),
+                new Note(1000)));
         List<ATM> atms = Arrays.asList(
-                new ATMImpl(availableNotes),
-                new ATMImpl(availableNotes),
-                new ATMImpl(availableNotes)
+                new ATMImpl(noteFactory),
+                new ATMImpl(noteFactory),
+                new ATMImpl(noteFactory)
         );
         atmDepartment.addATMs(atms);
 
@@ -32,13 +36,13 @@ public class Demo {
             Map<Note, Integer> notesToPut = new HashMap<>();
             switch (i) {
                 case 0:
-                    notesToPut.put(noteOf500, 1);
+                    notesToPut.put(noteFactory.getNote(500), 1);
                     break;
                 case 1:
-                    notesToPut.put(noteOf100, 1);
+                    notesToPut.put(noteFactory.getNote(100), 1);
                     break;
                 case 2:
-                    notesToPut.put(noteOf1000, 1);
+                    notesToPut.put(noteFactory.getNote(1000), 1);
                     break;
             }
             atm.putMoney(notesToPut); // 1600
@@ -53,13 +57,13 @@ public class Demo {
             Map<Note, Integer> notesToPut = new HashMap<>();
             switch (i) {
                 case 0:
-                    notesToPut.put(noteOf50, 2);
+                    notesToPut.put(noteFactory.getNote(50), 2);
                     break;
                 case 1:
-                    notesToPut.put(noteOf100, 2);
+                    notesToPut.put(noteFactory.getNote(100), 2);
                     break;
                 case 2:
-                    notesToPut.put(noteOf1000, 2);
+                    notesToPut.put(noteFactory.getNote(1000), 2);
                     break;
             }
             atm.putMoney(notesToPut); // 2300

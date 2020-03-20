@@ -1,4 +1,6 @@
-package ru.catn.cell;
+package ru.catn.atm.cell;
+
+import ru.catn.note.Note;
 
 public interface Cell {
     int getNotesQuantity();

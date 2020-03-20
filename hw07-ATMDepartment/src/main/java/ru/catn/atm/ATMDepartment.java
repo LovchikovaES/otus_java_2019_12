@@ -1,4 +1,4 @@
-package ru.catn;
+package ru.catn.atm;
 
 import java.util.ArrayList;
 import java.util.List;

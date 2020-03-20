@@ -1,22 +1,22 @@
-package ru.catn;
+package ru.catn.atm;
 
-import ru.catn.cell.Cell;
-import ru.catn.cell.CellHistory;
-import ru.catn.cell.CellImpl;
-import ru.catn.cell.Note;
+import ru.catn.atm.cell.Cell;
+import ru.catn.atm.cell.CellHistory;
+import ru.catn.atm.cell.CellImpl;
+import ru.catn.note.Note;
+import ru.catn.note.NoteFactory;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
 public class ATMImpl implements ATM, RestoreATMListener {
 
-    private final List<Note> availableNotes;
+    private final NoteFactory availableNotes;
     private TreeSet<CellImpl> cells = new TreeSet<>();
     private Map<Cell, CellHistory> cellsHistory = new HashMap<>();
 
-    public ATMImpl(List<Note> availableNotes) {
+    public ATMImpl(NoteFactory availableNotes) {
         this.availableNotes = availableNotes;
         createCells();
     }
@@ -93,7 +93,7 @@ public class ATMImpl implements ATM, RestoreATMListener {
     }
 
     private void createCells() {
-        for (var availableNote : availableNotes) {
+        for (var availableNote : availableNotes.getNotes()) {
             CellImpl cell = new CellImpl(availableNote);
             cells.add(cell);
             cellsHistory.put(cell, new CellHistory());

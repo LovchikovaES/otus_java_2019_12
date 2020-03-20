@@ -1,4 +1,4 @@
-package ru.catn;
+package ru.catn.atm;
 
 public interface RestoreATMListener {
     void onRestoreATM();

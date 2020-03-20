@@ -1,4 +1,4 @@
-package ru.catn.cell;
+package ru.catn.note;
 
 import java.util.Objects;
 
@@ -25,6 +25,7 @@ public class Note {
         Note note = (Note) o;
         return denomination == note.denomination;
     }
+
 
     @Override
     public int hashCode() {

@@ -1,6 +1,6 @@
-package ru.catn;
+package ru.catn.atm;
 
-import ru.catn.cell.Note;
+import ru.catn.note.Note;
 
 import java.util.Map;
 

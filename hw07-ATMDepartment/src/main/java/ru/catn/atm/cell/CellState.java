@@ -1,4 +1,4 @@
-package ru.catn.cell;
+package ru.catn.atm.cell;
 
 public class CellState implements Cloneable {
     private final int quantity;

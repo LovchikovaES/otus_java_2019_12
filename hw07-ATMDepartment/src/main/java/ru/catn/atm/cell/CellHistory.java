@@ -1,4 +1,4 @@
-package ru.catn.cell;
+package ru.catn.atm.cell;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
