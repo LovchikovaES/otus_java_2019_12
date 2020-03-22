@@ -17,19 +17,11 @@ public class JsonTypes {
             );
 
     public static JsonType getType(Object object) {
-        return object == null ? new JsonTypeNull() : getType(object, object.getClass());
-    }
-
-    public static JsonType getType(Object object, Class<?> type) {
-        JsonType jsonType = null;
-
-        for (var jType : jsonTypes) {
-            jsonType = jType.create(object, type);
-            if (jsonType != null) {
-                break;
-            }
+        for (var jsonType : jsonTypes) {
+            if (jsonType.isMatched(object))
+                return jsonType.create(object);
         }
-        return jsonType;
+        return new JsonTypeNull();
     }
 
 }

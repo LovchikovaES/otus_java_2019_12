@@ -5,12 +5,17 @@ public class JsonTypeNull implements JsonType {
     }
 
     @Override
-    public JsonType create(Object object, Class<?> type) {
-        return object == null ? new JsonTypeNull() : null;
+    public JsonType create(Object object) {
+        return new JsonTypeNull();
     }
 
     @Override
     public String write() {
         return "null";
+    }
+
+    @Override
+    public boolean isMatched(Object object) {
+        return object == null;
     }
 }

@@ -15,22 +15,23 @@ public class JsonTypeNumber implements JsonType {
     public JsonTypeNumber() {
     }
 
-    private JsonTypeNumber(Object value) {
-        this.value = value;
+    private JsonTypeNumber(Object object) {
+        this.value = object;
     }
 
     @Override
-    public JsonType create(Object object, Class<?> type) {
-        if (isNumberOrWrapper(type)) {
-            return new JsonTypeNumber(object);
-        } else {
-            return null;
-        }
+    public JsonType create(Object object) {
+        return new JsonTypeNumber(object);
     }
 
     @Override
     public String write() {
         return value.toString();
+    }
+
+    @Override
+    public boolean isMatched(Object object) {
+        return isNumberOrWrapper(object.getClass());
     }
 
     public boolean isNumberOrWrapper(Class<?> type) {

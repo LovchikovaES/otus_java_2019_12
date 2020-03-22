@@ -120,4 +120,14 @@ class JsonObjectWriterTest {
         Order order = new Order(items, partners, itemQuantities);
         assertEquals(gson.toJson(order), jsonObjectWriter.toJson(order));
     }
+
+    @Test
+    void checkList() {
+        assertEquals(gson.toJson(List.of(4, 5, 6)), jsonObjectWriter.toJson(List.of(4, 5, 6)));
+    }
+
+    @Test
+    void checkCollectionSingleton() {
+        assertEquals(gson.toJson(Collections.singletonList(7)), jsonObjectWriter.toJson(Collections.singletonList(7)));
+    }
 }

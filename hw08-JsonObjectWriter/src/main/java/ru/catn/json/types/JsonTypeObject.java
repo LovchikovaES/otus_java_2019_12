@@ -18,12 +18,27 @@ public class JsonTypeObject implements JsonType {
     }
 
     @Override
-    public JsonTypeObject create(Object object, Class<?> type) {
-        if (!Object.class.isAssignableFrom(type)) {
-            return null;
-        } else {
-            return new JsonTypeObject(getBoundFields(object));
+    public JsonTypeObject create(Object object) {
+        return new JsonTypeObject(getBoundFields(object));
+    }
+
+    @Override
+    public String write() {
+        json.append("{");
+        for (Map.Entry<String, JsonType> boundField : boundFields.entrySet()) {
+            writeName(boundField.getKey());
+            json.append(boundField.getValue().write());
+            json.append(',');
         }
+        if (boundFields.size() > 0)
+            json.deleteCharAt(json.length() - 1);
+        json.append("}");
+        return json.toString();
+    }
+
+    @Override
+    public boolean isMatched(Object object) {
+        return Object.class.isAssignableFrom(object.getClass());
     }
 
     private Map<String, JsonType> getBoundFields(Object object) {
@@ -40,7 +55,7 @@ public class JsonTypeObject implements JsonType {
 
             JsonType fieldType;
             try {
-                fieldType = JsonTypes.getType(field.get(object), field.getType());
+                fieldType = JsonTypes.getType(field.get(object));
             } catch (IllegalAccessException e) {
                 continue;
             }
@@ -52,20 +67,6 @@ public class JsonTypeObject implements JsonType {
             boundFields.put(fieldName, fieldType);
         }
         return boundFields;
-    }
-
-    @Override
-    public String write() {
-        json.append("{");
-        for (Map.Entry<String, JsonType> boundField : boundFields.entrySet()) {
-            writeName(boundField.getKey());
-            json.append(boundField.getValue().write());
-            json.append(',');
-        }
-        if (boundFields.size() > 0)
-            json.deleteCharAt(json.length() - 1);
-        json.append("}");
-        return json.toString();
     }
 
     private void writeName(String name) {

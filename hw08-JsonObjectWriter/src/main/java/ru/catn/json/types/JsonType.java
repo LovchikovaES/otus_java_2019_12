@@ -1,7 +1,9 @@
 package ru.catn.json.types;
 
 public interface JsonType {
-    JsonType create(Object object, Class<?> type);
+    boolean isMatched(Object object);
+
+    JsonType create(Object object);
 
     String write();
 }

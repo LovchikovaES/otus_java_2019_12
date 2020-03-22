@@ -6,16 +6,13 @@ public class JsonTypeEnum implements JsonType {
     public JsonTypeEnum() {
     }
 
-    private JsonTypeEnum(Object value) {
-        this.value = value;
+    private JsonTypeEnum(Object object) {
+        this.value = object;
     }
 
     @Override
-    public JsonType create(Object object, Class<?> type) {
-        if (type != null && type.isEnum())
-            return new JsonTypeEnum(object);
-        else
-            return null;
+    public JsonType create(Object object) {
+        return new JsonTypeEnum(object);
     }
 
     @Override
@@ -25,5 +22,10 @@ public class JsonTypeEnum implements JsonType {
         json.append(value.toString());
         json.append('"');
         return json.toString();
+    }
+
+    @Override
+    public boolean isMatched(Object object) {
+        return object.getClass().isEnum();
     }
 }

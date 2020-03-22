@@ -11,19 +11,21 @@ public class JsonTypeCollection implements JsonType {
 
     private JsonTypeCollection(Object object) {
         Object[] collectionElements = ((Collection) object).toArray();
-        collection = JsonTypes.getType(collectionElements, collectionElements.getClass());
+        collection = JsonTypes.getType(collectionElements);
     }
 
     @Override
-    public JsonType create(Object object, Class<?> type) {
-        if (!Collection.class.isAssignableFrom(object.getClass()))
-            return null;
-        else
-            return new JsonTypeCollection(object);
+    public JsonType create(Object object) {
+        return new JsonTypeCollection(object);
     }
 
     @Override
     public String write() {
         return collection.write();
+    }
+
+    @Override
+    public boolean isMatched(Object object) {
+        return Collection.class.isAssignableFrom(object.getClass());
     }
 }

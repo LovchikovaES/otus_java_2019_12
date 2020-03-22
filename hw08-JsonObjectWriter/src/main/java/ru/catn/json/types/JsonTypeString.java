@@ -14,13 +14,13 @@ public class JsonTypeString implements JsonType {
     public JsonTypeString() {
     }
 
-    private JsonTypeString(Object value) {
-        this.value = value;
+    private JsonTypeString(Object object) {
+        this.value = object;
     }
 
     @Override
-    public JsonType create(Object object, Class<?> type) {
-        return isNumberOrWrapper(type) ? new JsonTypeString(object) : null;
+    public JsonType create(Object object) {
+        return new JsonTypeString(object);
     }
 
     @Override
@@ -32,7 +32,12 @@ public class JsonTypeString implements JsonType {
         return json.toString();
     }
 
-    private boolean isNumberOrWrapper(Class<?> type) {
+    @Override
+    public boolean isMatched(Object object) {
+        return isCharOrString(object.getClass());
+    }
+
+    private boolean isCharOrString(Class<?> type) {
         if (type == null)
             return false;
         else

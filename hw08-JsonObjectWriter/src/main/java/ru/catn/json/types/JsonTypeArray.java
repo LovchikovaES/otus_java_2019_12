@@ -10,18 +10,15 @@ public class JsonTypeArray implements JsonType {
     public JsonTypeArray() {
     }
 
-    private JsonTypeArray(Object value, Class<?> type) {
-        for (int i = 0; i < Array.getLength(value); i++) {
-            listValues.add(JsonTypes.getType(Array.get(value, i), type.getComponentType()));
+    private JsonTypeArray(Object object) {
+        for (int i = 0; i < Array.getLength(object); i++) {
+            listValues.add(JsonTypes.getType(Array.get(object, i)));
         }
     }
 
     @Override
-    public JsonType create(Object object, Class<?> type) {
-        if (type != null && type.isArray())
-            return new JsonTypeArray(object, type);
-        else
-            return null;
+    public JsonType create(Object object) {
+        return new JsonTypeArray(object);
     }
 
     @Override
@@ -38,4 +35,10 @@ public class JsonTypeArray implements JsonType {
         json.append(']');
         return json.toString();
     }
+
+    @Override
+    public boolean isMatched(Object object) {
+        return object.getClass().isArray();
+    }
+
 }

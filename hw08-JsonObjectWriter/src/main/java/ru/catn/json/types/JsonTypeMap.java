@@ -10,7 +10,7 @@ public class JsonTypeMap implements JsonType {
     public JsonTypeMap() {
     }
 
-    private JsonTypeMap(Object object, Class<?> type) {
+    private JsonTypeMap(Object object) {
         this.entrySet = ((Map) object);
         Object[] values = ((Map) object).values().toArray();
         Object[] keys = ((Map) object).keySet().toArray();
@@ -21,11 +21,8 @@ public class JsonTypeMap implements JsonType {
     }
 
     @Override
-    public JsonType create(Object object, Class<?> type) {
-        if (!Map.class.isAssignableFrom(object.getClass()))
-            return null;
-        else
-            return new JsonTypeMap(object, type);
+    public JsonType create(Object object) {
+        return new JsonTypeMap(object);
     }
 
     @Override
@@ -53,5 +50,10 @@ public class JsonTypeMap implements JsonType {
             json.deleteCharAt(json.length() - 1);
         json.append('}');
         return json.toString();
+    }
+
+    @Override
+    public boolean isMatched(Object object) {
+        return Map.class.isAssignableFrom(object.getClass());
     }
 }
