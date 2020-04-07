@@ -28,15 +28,10 @@ public class Demo {
     public static void main(String[] args) throws Exception {
         DataSource dataSource = new DataSourceH2();
         Demo demo = new Demo();
-
         demo.createTables(dataSource);
-
         SessionManagerJdbc sessionManager = new SessionManagerJdbc(dataSource);
-
         demo.testUser(sessionManager);
         demo.testAccount(sessionManager);
-
-
     }
 
     private void testUser(SessionManagerJdbc sessionManager) {

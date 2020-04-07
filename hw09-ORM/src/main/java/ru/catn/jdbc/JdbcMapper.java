@@ -8,4 +8,6 @@ public interface JdbcMapper<T> {
     void update(T objectData);
 
     Optional<T> load(long id);
+
+    long getId(T entity);
 }

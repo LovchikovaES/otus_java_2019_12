@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import ru.catn.core.dao.AccountDao;
 import ru.catn.core.model.Account;
 import ru.catn.jdbc.DbExecutor;
+import ru.catn.jdbc.JdbcMapper;
 import ru.catn.jdbc.JdbcMapperImpl;
 import ru.catn.jdbc.sessionmanager.SessionManager;
 import ru.catn.jdbc.sessionmanager.SessionManagerJdbc;
@@ -16,7 +17,7 @@ public class AccountDaoJdbc implements AccountDao {
     private static Logger logger = LoggerFactory.getLogger(AccountDaoJdbc.class);
 
     private final SessionManagerJdbc sessionManager;
-    private final JdbcMapperImpl<Account> jdbcMapper;
+    private final JdbcMapper<Account> jdbcMapper;
 
     public AccountDaoJdbc(SessionManagerJdbc sessionManager, DbExecutor<Account> dbExecutor) {
         this.sessionManager = sessionManager;
