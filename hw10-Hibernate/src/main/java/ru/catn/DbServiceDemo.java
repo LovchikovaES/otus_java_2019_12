@@ -1,5 +1,6 @@
 package ru.catn;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,25 +28,31 @@ public class DbServiceDemo {
         SessionFactory sessionFactory = HibernateUtils.buildSessionFactory("hibernate.cfg.xml", classes);
         SessionManagerHibernate sessionManager = new SessionManagerHibernate(sessionFactory);
 
-        UserDao userDao = new UserDaoHibernate(sessionManager);
-        DBServiceUser dbServiceUser = new DbServiceUserImpl(userDao);
-        AddressDao addressDao = new AddressDaoHibernate(sessionManager);
-        DbServiceAddress dbServiceAddress = new DbServiceAddressImpl(addressDao);
-        PhoneDao phoneDao = new PhoneDaoHibernate(sessionManager);
-        DbServicePhone dbServicePhone = new DbServicePhoneImpl(phoneDao);
+        try (Session session = sessionFactory.openSession()) {
+            UserDao userDao = new UserDaoHibernate(sessionManager);
+            DBServiceUser dbServiceUser = new DbServiceUserImpl(userDao);
+            AddressDao addressDao = new AddressDaoHibernate(sessionManager);
+            DbServiceAddress dbServiceAddress = new DbServiceAddressImpl(addressDao);
+            PhoneDao phoneDao = new PhoneDaoHibernate(sessionManager);
+            DbServicePhone dbServicePhone = new DbServicePhoneImpl(phoneDao);
 
-        User user = new User("Пётр Петрович");
-        user.setAddress(new Address("Симферопольский бульвар, 19"));
-        user.addPhone(new Phone("(495) 345 45 54"));
-        user.addPhone(new Phone("960 234 72 90"));
+            User user = new User("Пётр Петрович");
+            user.setAddress(new Address("Симферопольский бульвар, 19"));
+            user.addPhone(new Phone("(495) 345 45 54"));
+            user.addPhone(new Phone("960 234 72 90"));
 
-        long id = dbServiceUser.saveUser(user);
+            long id = dbServiceUser.saveUser(user);
 
-        System.out.println("-----------------------------------------------------------");
-        Optional<User> optionalUser = dbServiceUser.getUser(id);
-        outputOptionalEntity(User.class.getSimpleName(), optionalUser);
+            System.out.println("-----------------------------------------------------------");
+            Optional<User> optionalUser = dbServiceUser.getUser(id);
 
-        if (optionalUser.isPresent()) {
+            if (optionalUser.isEmpty()) {
+                outputOptionalEntity(User.class.getSimpleName(), Optional.empty());
+                return;
+            }
+            session.update(optionalUser.get());
+            outputOptionalEntity(User.class.getSimpleName(), optionalUser);
+
             System.out.println("-----------------------------------------------------------");
             Address address = optionalUser.get().getAddress();
             if (address != null)

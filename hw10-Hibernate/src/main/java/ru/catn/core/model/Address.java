@@ -9,7 +9,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private long id;
 
     @Column(name = "street", nullable = false)
     private String street;
@@ -33,7 +33,7 @@ public class Address {
         return "Address{" +
                 "id=" + id +
                 ", street='" + street + '\'' +
-                ", userId=" + user.getId() +
+                ", userId=" + (user == null ? "" : user.getId()) +
                 '}';
     }
 }

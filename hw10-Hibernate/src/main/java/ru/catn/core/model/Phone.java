@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Phone {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Column(name = "number", nullable = false)
     private String number;
@@ -36,7 +36,7 @@ public class Phone {
         return "Phone{" +
                 "id=" + id +
                 ", number='" + number + '\'' +
-                ", userId=" + user.getId() +
+                ", userId=" + (user == null ? "" : user.getId()) +
                 '}';
     }
 }
