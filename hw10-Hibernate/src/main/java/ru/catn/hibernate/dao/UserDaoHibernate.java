@@ -1,6 +1,7 @@
 package ru.catn.hibernate.dao;
 
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,13 @@ public class UserDaoHibernate implements UserDao {
     public Optional<User> findById(long id) {
         DatabaseSessionHibernate currentSession = sessionManager.getCurrentSession();
         try {
-            return Optional.ofNullable(currentSession.getHibernateSession().find(User.class, id));
+            Session hibernateSession = currentSession.getHibernateSession();
+            User user = hibernateSession.find(User.class, id);
+            if (user != null) {
+                Hibernate.initialize(user.getAddress());
+                Hibernate.initialize(user.getPhones());
+            }
+            return Optional.ofNullable(user);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
