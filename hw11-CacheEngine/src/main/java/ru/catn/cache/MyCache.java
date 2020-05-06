@@ -7,19 +7,19 @@ import java.util.WeakHashMap;
 public class MyCache<K, V> implements HwCache<K, V> {
 
     private final String ACTION_PUT = "PUT";
-    private WeakHashMap<K, V> cache = new WeakHashMap<>();
-    private List<HwListener<K, V>> listeners = new ArrayList<>();
+    private final String ACTION_REMOVE = "REMOVE";
+    private final WeakHashMap<K, V> cache = new WeakHashMap<>();
+    private final List<HwListener<K, V>> listeners = new ArrayList<>();
 
     @Override
     public void put(K key, V value) {
-        remove(key);
         cache.put(key, value);
         onPut(key, value);
     }
 
     @Override
     public void remove(K key) {
-        cache.remove(key);
+        onRemove(key, cache.remove(key));
     }
 
     @Override
@@ -37,9 +37,19 @@ public class MyCache<K, V> implements HwCache<K, V> {
         listeners.remove(listener);
     }
 
-    private void onPut(K key, V value) {
+    private void notifyListeners(K key, V value, String action) {
         for (var listener : listeners) {
-            listener.notify(key, value, ACTION_PUT);
+            listener.notify(key, value, action);
         }
     }
+
+    private void onPut(K key, V value) {
+        notifyListeners(key, value, ACTION_PUT);
+    }
+
+    private void onRemove(K key, V value) {
+        notifyListeners(key, value, ACTION_REMOVE);
+    }
+
+
 }

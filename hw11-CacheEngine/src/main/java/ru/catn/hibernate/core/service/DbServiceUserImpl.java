@@ -13,7 +13,7 @@ public class DbServiceUserImpl implements DBServiceUser {
     private static Logger logger = LoggerFactory.getLogger(DbServiceUserImpl.class);
 
     private final UserDao userDao;
-    HwCache<Long, User> userCache;
+    private final HwCache<Long, User> userCache;
 
     public DbServiceUserImpl(UserDao userDao, HwCache<Long, User> userCache) {
         this.userDao = userDao;
