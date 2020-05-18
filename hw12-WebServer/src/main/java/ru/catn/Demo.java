@@ -9,6 +9,7 @@ import ru.catn.core.model.Address;
 import ru.catn.core.model.Phone;
 import ru.catn.core.model.User;
 import ru.catn.core.service.DBDataInitializer;
+import ru.catn.core.service.DBDataInitializerImpl;
 import ru.catn.core.service.DBServiceUser;
 import ru.catn.core.service.DbServiceUserImpl;
 import ru.catn.hibernate.HibernateProxyTypeAdapter;
@@ -33,7 +34,8 @@ public class Demo {
         SessionManagerHibernate sessionManager = new SessionManagerHibernate(sessionFactory);
 
         DBServiceUser dbServiceUser = new DbServiceUserImpl(new UserDaoHibernate(sessionManager));
-        DBDataInitializer.createUsers(dbServiceUser);
+        DBDataInitializer dbDataInitializer = new DBDataInitializerImpl();
+        dbDataInitializer.createUsers(dbServiceUser);
 
         var excludeFieldsJson = new ExclusionStrategy() {
             @Override
