@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Пользователи</title>
+</head>
+
+<body>
+
+<h4>Пользователи</h4>
+<table width="100%">
+    <thead>
+    <tr>
+        <td style="width: 40px">Ид</td>
+        <td style="width: 200px">Имя</td>
+        <td style="width: 70px">Логин</td>
+        <td style="width: 50px">Пароль</td>
+        <td style="width: 200px">Адрес</td>
+        <td style="width: 200px">Телефоны</td>
+    </tr>
+    </thead>
+    <#list users as user>
+    <tr>
+        <td>${user.id}</td>
+        <td><a href="/api/user/${user.id}">${user.name}</a></td>
+        <td>${user.login}</td>
+        <td>${user.password}</td>
+        <td>${user.address}</td>
+        <td>${user.phones}</td>
+    </tr>
+    </#list>
+</table>
+<br>
+<h4>Новый пользователь</h4>
+<form method="post">
+    <label for="name">Имя:</label>
+    <input id="name" name="name" type="text"><br><br>
+    <label for="login">Логин:</label>
+    <input id="login" name="login" type="text"><br><br>
+    <label for="login">Пароль:</label>
+    <input id="password" name="password" type="password"><br><br>
+    <label for="address">Адрес:</label>
+    <input id="address" name="address" type="text"><br><br>
+    <label for="phones">Телефоны:</label>
+    <input id="phones" name="phones" type="text"><br><br>
+    <input type="submit" value="Создать">
+</form>
+</body>
+</html>
