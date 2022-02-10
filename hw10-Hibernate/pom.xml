@@ -16,7 +16,7 @@
         <h2.database.version>1.4.200</h2.database.version>
         <org.unit.jupiter.version>5.5.2</org.unit.jupiter.version>
         <logback.classic.version>1.2.3</logback.classic.version>
-        <hibernate-core.version>5.4.4.Final</hibernate-core.version>
+        <hibernate-core.version>5.4.24.Final</hibernate-core.version>
         <assertj-core.version>3.13.2</assertj-core.version>
     </properties>
 
